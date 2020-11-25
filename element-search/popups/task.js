@@ -7,12 +7,12 @@ closingButton1.onclick = function() {
     arrOfModals[0].classList.remove('modal_active')
 };
 closingButton2.onclick = function() {
-    arrOfModals[1].classList.remove('modal_active');
-    arrOfModals[0].classList.remove('modal_active')
+    arrOfModals[1].classList.remove('modal_active')
 };
 let successButton = document.getElementsByClassName('show-success')[0];
 successButton.onclick = function() {
-    arrOfModals[1].classList.add('modal_active')
+    arrOfModals[1].classList.add('modal_active');
+    arrOfModals[0].classList.remove('modal_active')
 }
 
 
