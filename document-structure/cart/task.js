@@ -19,7 +19,8 @@ for (const productCard of productCards) {
         }
     });
     addingButton.addEventListener('click', ()=>{
-        const currentProductId  = +addingButton.closest('.product').getAttribute('data-id')
+        const usersCartArr = Array.from('usersCart')
+        const currentProductId  = addingButton.closest('.product').getAttribute('data-id')
         const productInCart = document.createElement('div');
         productInCart.classList.add('cart__product');
         const productImage = document.createElement('img');
@@ -31,11 +32,14 @@ for (const productCard of productCards) {
         if(+productCard.querySelector('.product__quantity-value').textContent>0) {
             usersCart.insertAdjacentElement("afterbegin", productInCart);
             productImage.setAttribute('src', imageInCart);
-            productInCart.setAttribute('data-id', productId)
+            productInCart.id = currentProductId
+            console.log(productInCart.id)
             productQuantity.innerText = productCard.querySelector('.product__quantity-value').textContent
         }
-        if(usersCart.querySelector('.data-id[currentProductId]')) {
-            productQuantity.innerText = ((+productQuantity.innerText) + (productCard.querySelector('.product__quantity-value').textContent)).toString();
+        let currentItem = usersCartArr.find((item)=>item.id === productInCart.id)
+        console.log(currentItem)
+        if(currentItem) {
+            currentItem.querySelector('.cart__product-count').innerText = ((+productQuantity.innerText) + (currentItem.querySelector('.product__quantity-value').textContent)).toString();
         }
         /*if(productQuantity.innerText === (0).toString()) {
             productInCart.parentNode.removeChild(productInCart)
