@@ -10,12 +10,14 @@ addingButton.addEventListener('click', (e)=>{
     const deleteItem = document.createElement('a');
     deleteItem.classList.add('task__remove');
     deleteItem.setAttribute('href', '');
-    deleteItem.innerText = '&times;';
+    deleteItem.innerHTML = '&times;';
     itemToDo.insertAdjacentElement('afterbegin', itemTitle);
     itemToDo.insertAdjacentElement('beforeend', deleteItem);
     itemTitle.innerText = inputField.value
-    taskList.insertAdjacentElement('afterbegin', itemToDo)
-    inputField.value = ''
+    if(itemTitle.innerText) {
+        taskList.insertAdjacentElement('afterbegin', itemToDo)
+        inputField.value = ''
+    }
     deleteItem.addEventListener('click', (e)=>{
         let tipToDelete = deleteItem.closest('.task')
         tipToDelete.parentNode.removeChild(tipToDelete)

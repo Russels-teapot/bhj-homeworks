@@ -19,7 +19,7 @@ for (const productCard of productCards) {
         }
     });
     addingButton.addEventListener('click', ()=>{
-        const usersCartArr = Array.from('usersCart')
+        const usersCartArr = Array.from(document.querySelectorAll('.cart__product'))
         const currentProductId  = addingButton.closest('.product').getAttribute('data-id')
         const productInCart = document.createElement('div');
         productInCart.classList.add('cart__product');
@@ -27,8 +27,17 @@ for (const productCard of productCards) {
         productImage.classList.add('cart__product-image');
         const productQuantity = document.createElement('div');
         productQuantity.classList.add('cart__product-count');
+        const deleteItem = document.createElement('div');
+        deleteItem.classList.add('delete_item');
+        deleteItem.innerHTML = '&times;';
+        let currentItem = usersCartArr.find((item)=>item.id === productInCart.id)
+        console.log(currentItem)
+        if(currentItem) {
+            currentItem.querySelector('.cart__product-count').innerText = ((+productQuantity.textContent) + (+currentItem.querySelector('.cart__product-count').textContent)).toString();
+        }
         productInCart.insertAdjacentElement("afterbegin", productImage);
         productInCart.insertAdjacentElement("beforeend", productQuantity);
+        productInCart.insertAdjacentElement("beforeend", deleteItem);
         if(+productCard.querySelector('.product__quantity-value').textContent>0) {
             usersCart.insertAdjacentElement("afterbegin", productInCart);
             productImage.setAttribute('src', imageInCart);
@@ -36,15 +45,11 @@ for (const productCard of productCards) {
             console.log(productInCart.id)
             productQuantity.innerText = productCard.querySelector('.product__quantity-value').textContent
         }
-        let currentItem = usersCartArr.find((item)=>item.id === productInCart.id)
-        console.log(currentItem)
-        if(currentItem) {
-            currentItem.querySelector('.cart__product-count').innerText = ((+productQuantity.innerText) + (currentItem.querySelector('.product__quantity-value').textContent)).toString();
-        }
-        /*if(productQuantity.innerText === (0).toString()) {
-            productInCart.parentNode.removeChild(productInCart)
-        }
-        */
+
+        deleteItem.addEventListener('click', ()=> {
+            let itemToDelete = deleteItem.closest('.cart__product')
+            itemToDelete.parentNode.removeChild(itemToDelete)
+        })
     });
     }
 
