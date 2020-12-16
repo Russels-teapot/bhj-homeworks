@@ -5,7 +5,6 @@ for (const productCard of productCards) {
     const incButton = productCard.querySelector('.product__quantity-control_inc');
     const addingButton = productCard.querySelector('.product__add');
     const imageInCart = productCard.querySelector('.product__image').getAttribute('src');
-    const productId = productCard.getAttribute('data-id');
     incButton.addEventListener('click', ()=> {
         let quantityValue = +productCard.querySelector('.product__quantity-value').textContent;
         if (quantityValue>=0) {
@@ -21,6 +20,14 @@ for (const productCard of productCards) {
     addingButton.addEventListener('click', ()=>{
         const usersCartArr = Array.from(document.querySelectorAll('.cart__product'))
         const currentProductId  = addingButton.closest('.product').getAttribute('data-id')
+        const currentProductQuantity  = +addingButton.previousElementSibling.querySelector('.product__quantity-value').textContent
+        let currentItem = usersCartArr.find((item)=>item.id === currentProductId)
+        if(currentItem) {
+            console.log('productQuantity', currentProductQuantity)
+            const currentProductCount = currentItem.querySelector('.cart__product-count')
+            currentProductCount.innerText = (currentProductQuantity + (+currentProductCount.textContent)).toString();
+            return
+        }
         const productInCart = document.createElement('div');
         productInCart.classList.add('cart__product');
         const productImage = document.createElement('img');
@@ -30,11 +37,6 @@ for (const productCard of productCards) {
         const deleteItem = document.createElement('div');
         deleteItem.classList.add('delete_item');
         deleteItem.innerHTML = '&times;';
-        let currentItem = usersCartArr.find((item)=>item.id === productInCart.id)
-        console.log(currentItem)
-        if(currentItem) {
-            currentItem.querySelector('.cart__product-count').innerText = ((+productQuantity.textContent) + (+currentItem.querySelector('.cart__product-count').textContent)).toString();
-        }
         productInCart.insertAdjacentElement("afterbegin", productImage);
         productInCart.insertAdjacentElement("beforeend", productQuantity);
         productInCart.insertAdjacentElement("beforeend", deleteItem);
@@ -43,12 +45,11 @@ for (const productCard of productCards) {
             productImage.setAttribute('src', imageInCart);
             productInCart.id = currentProductId
             console.log(productInCart.id)
-            productQuantity.innerText = productCard.querySelector('.product__quantity-value').textContent
+            productQuantity.innerText = currentProductQuantity.toString()
         }
-
         deleteItem.addEventListener('click', ()=> {
             let itemToDelete = deleteItem.closest('.cart__product')
-            itemToDelete.parentNode.removeChild(itemToDelete)
+            itemToDelete.remove()
         })
     });
     }
