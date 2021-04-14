@@ -1,0 +1,9 @@
+#clearing_button {
+    position: absolute;
+    margin-top: 170px;
+    padding: 4px 12px;
+    border-radius: 15px;
+    border: 2px solid #568dca;
+    line-height: 18px;
+    color: #568dca;
+}
