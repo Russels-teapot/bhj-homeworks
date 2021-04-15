@@ -1,23 +1,33 @@
-const loginForm = document.getElementById('signin');
-const greetingForm = document.getElementById('welcome')
-loginForm.classList.add('signin_active');
+const loginForm = document.getElementById('signin__form');
+const loginDiv = document.getElementById('signin');
+const greetingForm = document.getElementById('welcome');
+const userId = document.getElementById('user_id');
+const logoutBtn = document.getElementById('logout_btn');
+loginDiv.classList.add('signin_active');
 const loginRequest = new XMLHttpRequest();
 const loginData = new FormData();
-loginRequest.open('POST', 'https://netology-slow-rest.herokuapp.com/auth.php');
-loginRequest.setRequestHeader('Content-Type', 'multipart/form-data')
-const loginButton = document.getElementById('signin__btn');
-loginButton.addEventListener('click', ()=>{
-    const login = document.getElementsByClassName('control')[0].value;
-    const password = document.getElementsByClassName('control')[1].value;
-    loginData.append('login', login);
-    loginData.append('password', password);
+logoutBtn.addEventListener('click', ()=>{
+    greetingForm.classList.remove('welcome_active');
+    loginDiv.classList.add('signin_active');
+    userId.innerText = "";
+    loginForm.reset();
+});
+loginForm.addEventListener('submit', (event)=>{
+    event.preventDefault();
+    loginData.append('login', document.getElementsByClassName('control')[0].value);
+    loginData.append('password', document.getElementsByClassName('control')[1].value);
     loginRequest.onload = ()=>{
         const response = JSON.parse(loginRequest.response);
         if(response.success) {
-            loginForm.classList.remove('signin_active');
-            greetingForm.classList.add('welcome_active')
+            loginDiv.classList.remove('signin_active');
+            greetingForm.classList.add('welcome_active');
+            userId.append(response.user_id)
         }
-        else alert("Неверный логин/пароль")
-    }
+        else {
+            loginForm.reset();
+            alert("Неверный логин/пароль")
+        }
+    };
+    loginRequest.open('POST', 'https://netology-slow-rest.herokuapp.com/auth.php');
     loginRequest.send(loginData)
-})
+});
